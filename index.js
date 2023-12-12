@@ -25,25 +25,41 @@ bot.onText(/\/start/, async (msg) => {
     `Botga ${msg.from?.first_name} lik va username mi ${msg.from?.username} user kirib kurdi`)
 });
 
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
   if (msg.text == "Shaxsiy savolim bor🔒") {
-    bot.sendMessage(msg.chat.id, `
+    const request = await bot.sendMessage(msg.chat.id, `
     Agar savolingiz bo'lsa iltimos shu ko'rinishda bering!
     1.***********,
     2.***********,
     3.***********.`,
-
     {
       reply_markup: {
-        keyboard: [
-          ["Back 🔙"],
-        ],
-        resize_keyboard: true,
+        force_reply: true,
       },
     }
     )
-  }
 
+    bot.onReplyToMessage(request.chat.id, request.message_id, async (response) => {
+      await bot.sendMessage(
+        "-4056090084",
+        `Sizga ${response.from?.first_name} lik va username mi ${response.from?.username} userdan shaxsiy savol keldi!\n
+          ${response.text}
+        `)
+
+        bot.sendMessage(
+          response.chat.id,
+          "Savolingiz muvaffaqqiyatli yuborildi📝.",
+          {
+            reply_markup: {
+              keyboard: [
+                ["Back 🔙"],
+              ],
+              resize_keyboard: true,
+            },
+          }
+        );
+    })
+  }
   if (msg.text == "Ish yuzasidan📈") {
     bot.sendMessage(msg.chat.id, `
     Agar savolingiz bo'lsa iltimos shu ko'rinishda bering!
