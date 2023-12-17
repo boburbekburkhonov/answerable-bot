@@ -14,6 +14,7 @@ bot.onText(/\/start/, async (msg) => {
       reply_markup: {
         keyboard: [
           ["Shaxsiy savolim bor🔒", "Ish yuzasidan📈"],
+          ["Instagramdagi siz uchun foydali videolar🎁"],
         ],
         resize_keyboard: true,
       },
@@ -60,8 +61,9 @@ bot.on("message", async (msg) => {
         );
     })
   }
+
   if (msg.text == "Ish yuzasidan📈") {
-    bot.sendMessage(msg.chat.id, `
+    const request = await bot.sendMessage(msg.chat.id, `
     Agar savolingiz bo'lsa iltimos shu ko'rinishda bering!
     1.***********,
     2.***********,
@@ -69,13 +71,42 @@ bot.on("message", async (msg) => {
 
     {
       reply_markup: {
-        keyboard: [
-          ["Back 🔙"],
-        ],
-        resize_keyboard: true,
+        force_reply: true,
       },
     }
     )
+
+    bot.onReplyToMessage(request.chat.id, request.message_id, async (response) => {
+      await bot.sendMessage(
+        "-4056090084",
+        `Sizga ${response.from?.first_name} lik va username mi ${response.from?.username} userdan shaxsiy savol keldi!\n
+          ${response.text}
+        `)
+
+        bot.sendMessage(
+          response.chat.id,
+          "Savolingiz muvaffaqqiyatli yuborildi📝.",
+          {
+            reply_markup: {
+              keyboard: [
+                ["Back 🔙"],
+              ],
+              resize_keyboard: true,
+            },
+          }
+        );
+    })
+  }
+
+  if(msg.text == "Instagramdagi siz uchun foydali videolar🎁"){
+    bot.sendPhoto(msg.chat.id, 'https://firebasestorage.googleapis.com/v0/b/images-5c23a.appspot.com/o/pngtree-instagram-icon-png-image_6315974.png?alt=media&token=e36e506c-a2a7-473a-8dce-58853c9fbb7e', {
+      caption: `
+      <b>Kirish uchun link 👇👇👇</b>
+      <a href='https://www.instagram.com/'>Instagram</a>
+      `,
+      parse_mode: 'HTML',
+    })
+
   }
 
   if (msg.text == "Back 🔙") {
@@ -83,6 +114,7 @@ bot.on("message", async (msg) => {
       reply_markup: {
         keyboard: [
           ["Shaxsiy savolim bor🔒", "Ish yuzasidan📈"],
+          ["Instagramdagi siz uchun foydali videolar🎁"],
         ],
         resize_keyboard: true,
       },
